@@ -1,10 +1,10 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const INPUT_HEIGHT = 48;
 const BORDER_RADIUS = 4;
 
-export default EStyleSheet.create({
+const styles = EStyleSheet.create({
   $buttonBackgroundColorBase: '$white',
   $buttonBackgroundColorModifier: 0.1,
 
@@ -47,3 +47,5 @@ export default EStyleSheet.create({
     backgroundColor: '$border',
   },
 });
+
+export default styles;

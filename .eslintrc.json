@@ -30,6 +30,11 @@
     ],
     "react/forbid-prop-types": ["off"],
     "react/require-default-props": ["off"],
-    "global-require": ["off"]
+    "global-require": ["off"],
+    "object-curly-spacing": ["error", "always"],
+    "no-invalid-this": "warn",
+    "no-console": "warn",
+    "no-undef": "warn",
+    "react-native/no-inline-styles": "warn"
   }
 }
