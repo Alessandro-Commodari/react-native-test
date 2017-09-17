@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { View, Text, Keyboard, Animated, Platform } from 'react-native';
 
@@ -6,56 +7,56 @@ import styles from './styles';
 const ANIMATION_DURATION = 200;
 
 class Logo extends Component {
+  static propTypes = {
+    tintColor: PropTypes.string,
+  };
+
   constructor(props) {
     super(props);
 
-    this.containerImageWidth = new Animated.Value(styles.$largeContainerSize);
-    this.imageWidth = new Animated.Value(styles.$largeImageSize);
+    this.state = {
+      containerImageWidth: new Animated.Value(styles.$largeContainerSize),
+      imageWidth: new Animated.Value(styles.$largeImageSize),
+    };
   }
+
   componentDidMount() {
-    let showListener = 'keyboardWillShow';
-    let hideListener = 'keyboardWillHide';
-
-    if (Platform.OS === 'android') {
-      showListener = 'keyboardDidShow';
-      hideListener = 'keyboardDidHide';
-    }
-
-    this.keyboardShowListener = Keyboard.addListener(
-      showListener,
-      this.keyboardShow
+    const name = Platform.OS === 'ios' ? 'Will' : 'Did';
+    this.keyboardDidShowListener = Keyboard.addListener(
+      `keyboard${name}Show`,
+      this.keyboardWillShow
     );
-    this.keyboardHideListener = Keyboard.addListener(
-      hideListener,
-      this.keyboardHide
+    this.keyboardDidHideListener = Keyboard.addListener(
+      `keyboard${name}Hide`,
+      this.keyboardWillHide
     );
   }
 
   componentWillUnmount() {
-    this.keyboardShowListener.remove();
-    this.keyboardHideListener.remove();
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
   }
 
-  keyboardShow = () => {
+  keyboardWillShow = () => {
     Animated.parallel([
-      Animated.timing(this.containerImageWidth, {
+      Animated.timing(this.state.containerImageWidth, {
         toValue: styles.$smallContainerSize,
         duration: ANIMATION_DURATION,
       }),
-      Animated.timing(this.imageWidth, {
+      Animated.timing(this.state.imageWidth, {
         toValue: styles.$smallImageSize,
         duration: ANIMATION_DURATION,
       }),
     ]).start();
   };
 
-  keyboardHide = () => {
+  keyboardWillHide = () => {
     Animated.parallel([
-      Animated.timing(this.containerImageWidth, {
+      Animated.timing(this.state.containerImageWidth, {
         toValue: styles.$largeContainerSize,
         duration: ANIMATION_DURATION,
       }),
-      Animated.timing(this.imageWidth, {
+      Animated.timing(this.state.imageWidth, {
         toValue: styles.$largeImageSize,
         duration: ANIMATION_DURATION,
       }),
@@ -63,23 +64,29 @@ class Logo extends Component {
   };
 
   render() {
-    const containerImageStyle = [
+    const containerImageStyles = [
       styles.containerImage,
-      { width: this.containerImageWidth, height: this.containerImageWidth },
+      {
+        width: this.state.containerImageWidth,
+        height: this.state.containerImageWidth,
+      },
     ];
-
-    const imageStyle = [styles.logo, { width: this.imageWidth }];
+    const imageStyles = [
+      styles.logo,
+      { width: this.state.imageWidth },
+      this.props.tintColor ? { tintColor: this.props.tintColor } : null,
+    ];
 
     return (
       <View style={styles.container}>
         <Animated.Image
           resizeMode="contain"
-          style={containerImageStyle}
+          style={containerImageStyles}
           source={require('./images/background.png')}
         >
           <Animated.Image
             resizeMode="contain"
-            style={imageStyle}
+            style={imageStyles}
             source={require('./images/logo.png')}
           />
         </Animated.Image>

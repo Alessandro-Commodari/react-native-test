@@ -34,17 +34,18 @@ const styles = EStyleSheet.create({
     paddingHorizontal: 16,
     color: '$primaryBlue',
   },
-  input: {
-    height: INPUT_HEIGHT,
-    flex: 1,
-    fontSize: 18,
-    paddingHorizontal: 8,
-    color: '$inputText',
-  },
-  border: {
+  separator: {
     height: INPUT_HEIGHT,
     width: StyleSheet.hairlineWidth,
     backgroundColor: '$border',
+  },
+  input: {
+    flex: 1,
+    height: INPUT_HEIGHT,
+    borderTopRightRadius: BORDER_RADIUS,
+    paddingHorizontal: 8,
+    color: '$inputText',
+    fontSize: 18,
   },
 });
 
